@@ -82,7 +82,6 @@ class EtudiantControllerTest extends TestCase
     }
     public function test_update_method()
 {
-    // Créer un étudiant fictif dans la base de données
     $etudiant = Etudiant::create([
         'nom' => 'NomInitial',
         'prenom' => 'PrenomInitial',
@@ -90,7 +89,6 @@ class EtudiantControllerTest extends TestCase
         'niveau' => 'NiveauInitial',
     ]);
 
-    // Envoyer une requête PUT pour mettre à jour les données de l'étudiant
     $response = $this->putJson('/etudiants/' . $etudiant->id, [
         'nom' => 'NomModifie',
         'prenom' => 'PrenomModifie',
@@ -98,7 +96,6 @@ class EtudiantControllerTest extends TestCase
         'niveau' => 'NiveauModifie',
     ]);
 
-    // Vérifier si la réponse est OK (200) et si elle contient les données de l'étudiant modifié
     $response->assertOk()
         ->assertJson([
             'etudiant' => [
@@ -109,7 +106,6 @@ class EtudiantControllerTest extends TestCase
             ]
         ]);
 
-    // Vérifier si les données de l'étudiant ont été mises à jour dans la base de données
     $this->assertDatabaseHas('etudiants', [
         'id' => $etudiant->id,
         'nom' => 'NomModifie',
@@ -121,7 +117,6 @@ class EtudiantControllerTest extends TestCase
 
 public function test_destroy_method()
 {
-    // Créer un étudiant fictif dans la base de données
     $etudiant = Etudiant::create([
         'nom' => 'NomASupprimer',
         'prenom' => 'PrenomASupprimer',
@@ -129,13 +124,10 @@ public function test_destroy_method()
         'niveau' => 'NiveauASupprimer',
     ]);
 
-    // Envoyer une requête DELETE pour supprimer l'étudiant
     $response = $this->deleteJson('/etudiants/' . $etudiant->id);
 
-    // Vérifier si la réponse est NO_CONTENT (204)
     $response->assertNoContent();
 
-    // Vérifier si l'étudiant a été supprimé de la base de données
     $this->assertDatabaseMissing('etudiants', ['id' => $etudiant->id]);
 }
 
